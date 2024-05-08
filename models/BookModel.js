@@ -8,6 +8,7 @@ const Book = db.define(
   {
     author: DataTypes.STRING,
     price: DataTypes.STRING,
+    image: DataTypes.STRING,
   },
   {
     freezeTableName: true,

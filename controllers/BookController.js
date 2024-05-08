@@ -1,4 +1,12 @@
 import Book from "../models/BookModel.js";
+import path from "path";
+import fs from "fs";
+
+const saveImg = (image) => {
+  const imgPath = path.join(__dirname, "../public/uploads", image.name);
+  fs.writeFileSync(imgPath, image.data);
+  return `../public/uploads/${image.name}`;
+};
 
 export const getBooks = async (req, res) => {
   try {
@@ -22,22 +30,39 @@ export const getBookById = async (req, res) => {
   }
 };
 
-export const createBook = async (req, res) => {
+export const createBook = async function (req, res) {
+  console.log(req.file);
   try {
-    await Book.create(req.body);
-    res.status(201).json({ msg: "Book Created" });
+    let book = await Book.create({
+      author: req.body.author,
+      price: req.body.price,
+      image: req.file.path,
+    });
+    res.status(201).json({
+      message: "Berhasil tambah data buku",
+      data: book,
+    });
   } catch (error) {
-    console.log(error.message);
+    res.status(404).json({
+      message: error.message,
+    });
   }
 };
 
 export const updateBook = async (req, res) => {
   try {
-    await Book.update(req.body, {
-      where: {
-        id: req.params.id,
-      },
-    });
+    const { author, price } = req.body;
+    const image = req.file;
+    const imageUrl = saveImg(image);
+
+    await Book.update(
+      { author, price, image: imageUrl },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
     res.status(200).json({ msg: "Updated Book" });
   } catch (error) {
     console.log(error.message);
