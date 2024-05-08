@@ -1,5 +1,5 @@
 import express from "express";
-import multer from "multer"; // Mengimpor multer menggunakan sintaks ES module
+import multer from "multer";
 import {
   getBooks,
   getBookById,
@@ -23,8 +23,9 @@ router.get("/books", getBooks);
 router.get("/books/:id", getBookById);
 
 router.post("/books", upload.single("image"), createBook);
+router.patch("/books/:id", upload.single("image"), updateBook);
 
-router.patch("/books/:id", updateBook);
+// router.patch("/books/:id", updateBook);
 router.delete("/books/:id", deleteBook);
 
 export default router;

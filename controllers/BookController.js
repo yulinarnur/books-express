@@ -3,6 +3,10 @@ import path from "path";
 import fs from "fs";
 
 const saveImg = (image) => {
+  if (!image || !image.name || !image.data) {
+    throw new Error("Invalid image object");
+  }
+
   const imgPath = path.join(__dirname, "../public/uploads", image.name);
   fs.writeFileSync(imgPath, image.data);
   return `../public/uploads/${image.name}`;
@@ -31,7 +35,6 @@ export const getBookById = async (req, res) => {
 };
 
 export const createBook = async function (req, res) {
-  console.log(req.file);
   try {
     let book = await Book.create({
       author: req.body.author,
@@ -52,20 +55,24 @@ export const createBook = async function (req, res) {
 export const updateBook = async (req, res) => {
   try {
     const { author, price } = req.body;
-    const image = req.file;
-    const imageUrl = saveImg(image);
+    let updateData = { author, price };
 
-    await Book.update(
-      { author, price, image: imageUrl },
-      {
-        where: {
-          id: req.params.id,
-        },
-      }
-    );
-    res.status(200).json({ msg: "Updated Book" });
+    if (req.file && req.file.filename) {
+      const imageUrl = req.file.path;
+      updateData.image = imageUrl;
+      console.log("nahh", updateData);
+    }
+
+    // update
+    const updatedBook = await Book.update(updateData, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.status(200).json({ message: "Buku berhasil diperbarui" });
   } catch (error) {
     console.log(error.message);
+    res.status(500).json({ message: "Gagal mengupdate buku" });
   }
 };
 
