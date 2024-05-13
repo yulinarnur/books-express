@@ -54,10 +54,26 @@ router.get("/", (req, res) => {
       res.json({ message: err.message });
     });
 });
-
+// add books
 router.get("/books", (req, res) => {
   res.render("add_books", { title: "Add Books" });
 });
+
+// edit book
+router.get("/books/:id", async (req, res) => {
+  try {
+    const book = await Book.findByPk(req.params.id);
+    if (!book) {
+      return res.status(404).send("Book not found");
+    }
+    res.render("edit_books", { title: "Edit Book", books: book });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+// editnya
+router.post("/update/:id", upload.single("image"), updateBook);
 
 // ------------------------------
 
@@ -65,7 +81,7 @@ router.get("/books", (req, res) => {
 router.get("/books", getBooks);
 router.get("/books/:id", getBookById);
 
-router.post("/booksAdd", upload.single("image"), createBook);
+router.post("/books", upload.single("image"), createBook);
 router.patch("/books/:id", upload.single("image"), updateBook);
 
 // router.patch("/books/:id", updateBook);

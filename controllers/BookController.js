@@ -74,7 +74,8 @@ export const updateBook = async (req, res) => {
         id: req.params.id,
       },
     });
-    res.status(200).json({ message: "Buku berhasil diperbarui" });
+    res.redirect("/");
+    // res.status(200).json({ message: "Buku berhasil diperbarui" });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: "Gagal mengupdate buku" });
