@@ -19,7 +19,7 @@
       <% } %>
       <div class="table-responsive">
         <% if (books != '') { %>
-        <table class="table table-striped text-center">
+        <table class="table table-striped text-center my-3">
           <thead>
             <tr class="table-dark">
               <th>ID</th>
@@ -31,7 +31,7 @@
           </thead>
           <tbody>
             <% books.forEach((row, index) => { %>
-            <tr>
+            <tr class="align-middle">
               <td><%= index %></td>
               <td>
                 <img
