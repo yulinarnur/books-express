@@ -3,7 +3,7 @@ import db from "../config/database.js";
 
 const { DataTypes } = Sequelize;
 
-const Book = db.define(
+export const Book = db.define(
   "books",
   {
     author: DataTypes.STRING,

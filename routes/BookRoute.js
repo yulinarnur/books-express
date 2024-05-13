@@ -7,6 +7,8 @@ import {
   updateBook,
   deleteBook,
 } from "../controllers/BookController.js";
+import { Book } from "../models/BookModel.js";
+import session from "express-session";
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -19,6 +21,43 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+router.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+// ejs
+router.get("/", (req, res) => {
+  Book.findAll()
+    .then((books) => {
+      if (books.length > 0) {
+        res.render("index", {
+          title: "Home Page",
+          books: books,
+          message: null,
+        });
+      } else {
+        res.render("index", {
+          title: "Home Page",
+          books: null,
+          message: {
+            type: "warning",
+            text: "No books found in the database.",
+          },
+        });
+      }
+    })
+    .catch((err) => {
+      res.json({ message: err.message });
+    });
+});
+
+// ------------------------------
+
+// router endpoint
 router.get("/books", getBooks);
 router.get("/books/:id", getBookById);
 

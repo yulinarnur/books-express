@@ -41,10 +41,15 @@ export const createBook = async function (req, res) {
       price: req.body.price,
       image: req.file.path,
     });
-    res.status(201).json({
-      message: "Berhasil tambah data buku",
-      data: book,
-    });
+    req.session.message = {
+      type: "success",
+      message: "Book successfully created!",
+    };
+    res.redirect("/");
+    // res.status(201).json({
+    //   message: "Berhasil tambah data buku",
+    //   data: book,
+    // });
   } catch (error) {
     res.status(404).json({
       message: error.message,
