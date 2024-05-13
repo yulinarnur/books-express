@@ -55,13 +55,17 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/books", (req, res) => {
+  res.render("add_books", { title: "Add Books" });
+});
+
 // ------------------------------
 
 // router endpoint
 router.get("/books", getBooks);
 router.get("/books/:id", getBookById);
 
-router.post("/books", upload.single("image"), createBook);
+router.post("/booksAdd", upload.single("image"), createBook);
 router.patch("/books/:id", upload.single("image"), updateBook);
 
 // router.patch("/books/:id", updateBook);
