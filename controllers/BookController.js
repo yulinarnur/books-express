@@ -89,7 +89,8 @@ export const deleteBook = async (req, res) => {
         id: req.params.id,
       },
     });
-    res.status(200).json({ msg: "Book Deleted" });
+    res.redirect("/");
+    // res.status(200).json({ msg: "Book Deleted" });
   } catch (error) {
     console.log(error.message);
   }

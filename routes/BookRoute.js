@@ -75,6 +75,8 @@ router.get("/books/:id", async (req, res) => {
 // editnya
 router.post("/update/:id", upload.single("image"), updateBook);
 
+// delete
+router.get("/delete/:id", deleteBook);
 // ------------------------------
 
 // router endpoint
